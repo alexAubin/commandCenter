@@ -4,3 +4,17 @@ body
     background-color: #000;
 }
 
+
+#canvasDiv
+{
+    width:  1200px;
+    height: 600px;
+    margin: auto;
+}
+
+#debug
+{
+    margin-left:50px;
+    color: #FFF;
+}
+
