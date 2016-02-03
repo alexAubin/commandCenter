@@ -20,7 +20,7 @@
 
 from datetime import datetime
 
-timeFilterTooOld = 3600 * 6
+timeFilterTooOld = 3600 * 600
 
 def parseAccessLog(fileName) :
 

@@ -1,9 +1,8 @@
-var units = [];
+var units  = [];
+var groups = [];
 
 var canvas
 var ctx
-
-var date = new Date()
 
 function init()
 {
@@ -11,23 +10,70 @@ function init()
     ctx    = canvas.getContext('2d');
 
     canvas.width = 1200;
-    canvas.height = 600;
-
-    var myUnit2 = new Unit("Test2",150,400);
-    units.push(myUnit2);
-
-    var myUnit = new Unit("Test",400,400);
-    myUnit.update("ok")
-    units.push(myUnit);
-
-    var myUnit3 = new Unit("Test3",650,400);
-    myUnit3.update("evil")
-    units.push(myUnit3);
+    canvas.height = 400;
 
     // This starts the drawing loop
     draw()
 
     printDebug("Initialization complete.")
+
+    // Get the monitoring summary (json file) + update the view
+    loadMonitoringSummary()
+
+}
+
+function loadMonitoringSummary() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() 
+    {
+        if (xhttp.readyState == 4 && xhttp.status == 200) 
+        {
+            commandCenterUpdate(xhttp.responseText)
+        }
+        else
+        {
+            printDebug("Error while loading monitoring summary")
+        }
+    };
+    xhttp.open("GET", "./monitorSummary.json", true);
+    xhttp.send();
+}
+
+function commandCenterUpdate(rawJson)
+{
+    // FIXME : maybe first delete objects that were in the tabulars
+    units = [];
+    group = [];
+           
+    printDebug(rawJson)
+
+    json = JSON.parse(rawJson)
+
+    for (groupName in json) 
+    {
+        var x      = json[groupName].x
+        var y      = json[groupName].y
+        var size   = json[groupName].size
+        var nSlots = json[groupName].nSlots
+
+        var group = new PolyReg(groupName, x, y, size, nSlots)
+
+        groups.push(group)
+
+        var units_ = json[groupName].units
+        
+        for (unitName in units_)
+        {
+            var slot = group.getSlot(units_[unitName].slot);
+            var unit = new Unit(unitName, slot[0], slot[1]);
+            unit.status = units_[unitName].status;
+            // + unit.nNotifs
+            // + unit.log
+            units.push(unit);
+        }
+
+    }
+
 
 }
 
@@ -45,7 +91,7 @@ function clickHandler(event)
         
         d = distance(mouseX,mouseY,unitX,unitY)
 
-        if (d < unitSize)
+        if (d < unit.r)
         {
             printDebug("click detected on" + i)    
             unit.onclick()

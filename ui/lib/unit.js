@@ -1,9 +1,11 @@
 
-var unitSize    = 40;
-
 var transparent = 'rgba(0,0,0,0)'
 
 var white       = 'rgba(255,255,255,0.7)';
+
+var darkGray    = 'rgba(60, 60, 60, 1)';
+var midGray     = 'rgba(130,130,130,1)';
+var lightGray   = 'rgba(180,180,180,1)';
 
 var darkGreen   = 'rgba(30,140,30,1)';
 var auraGreen   = 'rgba(30,255,30,0.35)';
@@ -19,10 +21,12 @@ function Unit(name, x, y)
     this.name    = name;
     this.x       = x;
     this.y       = y;
-    this.status  = "inactive";
+    this.status  = "off";
     this.update  = unitUpdate;
     this.draw    = unitDraw;
     this.onclick = unitClick;
+
+    this.r       = 15;
 }
 
 function unitUpdate(newStatus)
@@ -44,11 +48,11 @@ function unitDraw()
         var innerRingColor = lightGreen;
         var auraColor      = auraGreen;
     }
-    if (this.status == "inactive")
+    if (this.status == "off")
     {
-        var darkColor      = darkGreen;
-        var outerRingColor = midGreen;
-        var innerRingColor = lightGreen;
+        var darkColor      = darkGray;
+        var outerRingColor = midGray;
+        var innerRingColor = lightGray;
         var auraColor      = transparent;
     }
     else if (this.status == "evil")
@@ -61,56 +65,19 @@ function unitDraw()
 
     var x = this.x
     var y = this.y
+    var r = this.r
 
-    drawRing      (x, y, unitSize*0.5,  unitSize*0.4,  darkColor);
-    drawRing      (x, y, unitSize*0.86,  unitSize*0.28, outerRingColor);
-    drawRing      (x, y, unitSize*0.6,   unitSize*0.06, innerRingColor);
-    drawArc       (x, y, unitSize*1.13,  1, white);
-    drawAura      (x, y, unitSize*1.5,   auraColor);
+    drawRing(x, y, r * 0.5,   r * 0.4,   darkColor);
+    drawRing(x, y, r * 0.86,  r * 0.28,  outerRingColor);
+    drawRing(x, y, r * 0.6,   r * 0.06,  innerRingColor);
+
+    if (this.status != "off")
+    {
+        drawArc (x, y, r * 1.13,  1,     white);
+        drawAura(x, y, r * 1.5,          auraColor);
+    }
+    
+    drawText(x, y + r*2, this.name)
+
 }
 
-function drawFullCircle(x, y, r, color)
-{
-    ctx.beginPath();
-    //ctx.arc(x, y, r, 0.8 * Math.PI, 1.3 * Math.PI);
-    ctx.arc(x, y, r, 0 * Math.PI, 2 * Math.PI);
-    ctx.fillStyle = color;
-    ctx.fill();
-}
-
-function drawRing(x, y, r, w, color)
-{
-    ctx.beginPath();
-    //ctx.arc(x, y, r, 0.9 * Math.PI, 2.1 * Math.PI);
-    ctx.arc(x, y, r, 0 * Math.PI, 2 * Math.PI);
-    ctx.lineWidth = w
-    ctx.strokeStyle = color;
-    ctx.stroke();
-    //ctx.fill();
-}
-
-function drawAura(x, y, r, color)
-{
-    ctx.beginPath();
-    var gradient = ctx.createRadialGradient(x, y, 0, x, y, r);
-    gradient.addColorStop(0,    color);
-    gradient.addColorStop(0.3,  transparent);
-    gradient.addColorStop(0.5,  transparent);
-    gradient.addColorStop(0.75, color);
-    gradient.addColorStop(1,    transparent);
-    //ctx.arc(x, y, r, 0.9 * Math.PI, 2.1 * Math.PI);
-    ctx.arc(x, y, r, 0 * Math.PI, 2 * Math.PI);
-    ctx.fillStyle = gradient;
-    ctx.fill();
-}
-
-function drawArc(x, y, r, w, color)
-{
-    var speed = 1000
-    var offset = Math.round((new Date()).getTime() / 10) % speed / speed
-    ctx.beginPath();
-    ctx.arc(x, y, r, (0+offset*2) * Math.PI, (1.6+offset*2) * Math.PI);
-    ctx.lineWidth = w
-    ctx.strokeStyle = color;
-    ctx.stroke();
-}
