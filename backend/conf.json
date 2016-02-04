@@ -1,0 +1,38 @@
+
+{
+    "refresh" : 5,
+
+    "groups" : 
+    {
+        "services" : 
+        {
+            "x"        : 200,
+            "y"        : 200,
+            "nSlots"   : 6,
+            "size"     : 150,
+            "monitors" : [ "www", "mail", "ssh", "xmpp" ]
+        },
+        "system" :
+        {
+            "x"        : 600,
+            "y"        : 200,
+            "nSlots"   : 3,
+            "size"     : 100,
+            "monitors" : [ "cpu", "ram", "hdd" ]
+        },
+        "security/misc" :
+        {
+            "x"        : 1000,
+            "y"        : 200,
+            "nSlots"   : 6,
+            "size"     : 150,
+            "monitors" : [ "update", "ssl", "shield", "backup", "dns" ]
+        }
+    }
+}
+
+
+
+
+
+

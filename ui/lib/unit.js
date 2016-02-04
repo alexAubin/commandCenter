@@ -55,7 +55,7 @@ function unitDraw()
         var innerRingColor = lightGray;
         var auraColor      = transparent;
     }
-    else if (this.status == "evil")
+    else if (this.status == "alert")
     {
         var darkColor      = darkRed;
         var outerRingColor = lightRed;

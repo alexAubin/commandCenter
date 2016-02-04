@@ -14,7 +14,10 @@ def main() :
     mail  = { "status" : "off", "slot" : 1, "nNotifs" : 0,"logs" : dummyLogs }
     sshd  = { "status" : "evil","slot" : 3, "nNotifs" : 5,"logs" : dummyLogs }
 
-    units = { "nginx" : nginx, "mail" : mail, "sshd" : sshd }
+    units = { "nginx" : nginx, 
+              "mail"  : mail, 
+              "sshd"  : sshd 
+            }
 
     services = { "x"        : 400, 
                  "y"        : 200, 

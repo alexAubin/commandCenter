@@ -1,0 +1,14 @@
+
+
+{
+
+    "accessLogs"         : "/home/alex/dev/commandCenter/backend/tmp/*access.log",  
+    "errorLogs"          : "/home/alex/dev/commandCenter/backend/tmp/*error.log",  
+    "filterOlderThan"    : 600,
+    "failedAccessWeight" : 0.01,
+    "errorWeight"        : 1
+}
+
+
+
+

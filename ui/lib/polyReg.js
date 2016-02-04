@@ -17,9 +17,18 @@ function polyregDraw()
     var r = this.r
     var n = this.n
 
-    var theta  = 0;
+    if (n % 2 == 0)
+    {
+        var theta  = 0;
+    }
+    else
+    {
+        var theta  = -Math.PI / 2;
+    }
+    var thetaEnd = theta + 2 * Math.PI;
+
     var dtheta = 2 * Math.PI / n
-    while (theta < 2 * Math.PI)
+    while (theta < thetaEnd)
     {
         var x  = xcenter + r * Math.cos(theta)
         var y  = ycenter + r * Math.sin(theta)
@@ -32,12 +41,16 @@ function polyregDraw()
         drawLine      (x, y, x2, y2);
     }
     
-    drawText(xcenter, ycenter-r, this.name)
+    drawText(xcenter, ycenter, this.name)
 }
 
 function polyregGetSlot(i)
 {
     var theta = i * 2 * Math.PI / this.n
+    if (this.n % 2 != 0)
+    {
+        theta = theta - Math.PI / 2
+    }
 
     var x  = Math.round(this.x + this.r * Math.cos(theta))
     var y  = Math.round(this.y + this.r * Math.sin(theta))
